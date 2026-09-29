@@ -1,0 +1,476 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>BoneBound — Official NFT Mint on Robinhood Chain</title>
+<meta name="description" content="BoneBound (BONEB) official mint on Robinhood Chain. Verified contract source, no token approvals ever requested." />
+<meta name="theme-color" content="#08080a" />
+<link rel="canonical" href="https://bonebound.vercel.app/" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%237c5cff'/%3E%3Ctext x='32' y='44' font-size='34' font-family='Arial,Helvetica,sans-serif' font-weight='700' fill='%23fff' text-anchor='middle'%3EB%3C/text%3E%3C/svg%3E" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="BoneBound" />
+<meta property="og:title" content="BoneBound — Official NFT Mint on Robinhood Chain" />
+<meta property="og:description" content="BoneBound (BONEB) official mint. Verified contract source on Robinhood Chain. No token approvals ever requested." />
+<meta property="og:url" content="https://bonebound.vercel.app/" />
+<meta property="og:image" content="https://bonebound.vercel.app/banner.png" />
+<meta property="og:image:width" content="2048" />
+<meta property="og:image:height" content="1024" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="BoneBound — Official NFT Mint on Robinhood Chain" />
+<meta name="twitter:description" content="BoneBound (BONEB) official mint. Verified contract source on Robinhood Chain. No token approvals ever requested." />
+<meta name="twitter:image" content="https://bonebound.vercel.app/banner.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #08080a;
+    --surface: #0e0e11;
+    --surface-2: #121216;
+    --border: rgba(255,255,255,0.08);
+    --border-strong: rgba(255,255,255,0.16);
+    --text: #fafafa;
+    --muted: #a1a1aa;
+    --faint: #6b6b74;
+    --accent: #7c5cff;
+    --accent-soft: #b7a7ff;
+    --ok: #34d399;
+    --warn: #fbbf24;
+    --err: #f87171;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 15px; line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  body::before {
+    content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    background:
+      radial-gradient(760px 280px at 50% -100px, rgba(124,92,255,0.10), transparent 70%),
+      linear-gradient(rgba(255,255,255,0.014) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.014) 1px, transparent 1px);
+    background-size: auto, 44px 44px, 44px 44px;
+    -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 35%, transparent 72%);
+    mask-image: linear-gradient(180deg, #000 0%, #000 35%, transparent 72%);
+  }
+  a { color: inherit; text-decoration: none; }
+  a:hover { text-decoration: underline; text-underline-offset: 3px; }
+  :where(button, a, input):focus-visible { outline: 2px solid rgba(124,92,255,0.7); outline-offset: 2px; border-radius: 10px; }
+  .wrap { max-width: 1000px; margin: 0 auto; padding: 0 24px 72px; }
+
+  /* ── Header ─────────────────────────────── */
+  header { display: flex; align-items: center; gap: 10px; padding: 22px 0 20px; }
+  .brand { display: flex; align-items: baseline; gap: 8px; font-weight: 700; letter-spacing: -0.01em; }
+  .brand .sym { font-size: 11px; color: var(--faint); font-weight: 600; letter-spacing: 1.4px; }
+  .spacer { flex: 1; }
+  .icon-btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 34px; height: 34px; border-radius: 10px;
+    border: 1px solid var(--border); color: var(--muted); transition: 0.15s;
+  }
+  .icon-btn:hover { color: var(--text); border-color: var(--border-strong); text-decoration: none; }
+  .net {
+    font-size: 12px; padding: 7px 11px; border-radius: 999px;
+    border: 1px solid var(--border); background: transparent; color: var(--muted);
+    cursor: pointer; user-select: none; transition: 0.15s;
+  }
+  .net:hover { border-color: var(--border-strong); color: var(--text); }
+  .net-ok { color: var(--ok); border-color: rgba(52,211,153,0.35); }
+  .net-warn { color: var(--warn); border-color: rgba(251,191,36,0.4); }
+  .net-idle { color: var(--muted); }
+  button {
+    font: inherit; font-weight: 600; cursor: pointer;
+    border-radius: 10px; border: 1px solid var(--border-strong);
+    background: transparent; color: var(--text);
+    padding: 10px 16px; transition: 0.15s;
+  }
+  button:hover:not(:disabled) { background: rgba(255,255,255,0.06); }
+  button:disabled { opacity: 0.45; cursor: not-allowed; }
+  #connectBtn { padding: 9px 15px; font-size: 14px; }
+  button.primary, .btn-wide { background: #fff; color: #09090b; border-color: #fff; }
+  button.primary:hover:not(:disabled), .btn-wide:hover:not(:disabled) { background: #e4e4e7; }
+  .btn-wide::after { content: "→"; margin-left: 8px; display: inline-block; transition: transform 0.15s; }
+  .btn-wide:hover:not(:disabled)::after { transform: translateX(3px); }
+
+  /* ── Hero banner ────────────────────────── */
+  .banner {
+    position: relative; overflow: hidden;
+    border: 1px solid var(--border); border-radius: 20px;
+    background: linear-gradient(160deg, #14141c 0%, #0b0b10 55%, #08080a 100%);
+    display: flex;
+  }
+  .banner > img {
+    position: absolute; inset: 0; z-index: 0;
+    width: 100%; height: 100%; object-fit: cover;
+  }
+  .banner::before {
+    content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background:
+      radial-gradient(640px 260px at 50% 60%, rgba(8,8,10,0.45), transparent 78%),
+      linear-gradient(180deg, rgba(8,8,10,0.30) 0%, rgba(8,8,10,0.42) 55%, rgba(8,8,10,0.72) 100%);
+  }
+  .banner-badge {
+    position: absolute; top: 14px; left: 16px; z-index: 2;
+    font-size: 11px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--muted);
+    background: rgba(8,8,10,0.55); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.14); padding: 6px 10px; border-radius: 999px;
+  }
+  .banner-content {
+    position: relative; z-index: 2; width: 100%;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 64px 24px 52px;
+  }
+  .banner-content h1 {
+    margin: 0 0 6px;
+    font-size: clamp(34px, 5.6vw, 52px); font-weight: 800; letter-spacing: -0.035em;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.85), 0 4px 28px rgba(0,0,0,0.65);
+  }
+  .banner-content .sub {
+    margin: 0 0 22px; font-size: 15px; font-weight: 500;
+    color: rgba(255,255,255,0.88);
+    text-shadow: 0 1px 4px rgba(0,0,0,0.9), 0 2px 16px rgba(0,0,0,0.6);
+  }
+  .glass {
+    width: min(480px, 100%);
+    background: rgba(8,8,10,0.45);
+    border: 1px solid rgba(255,255,255,0.14);
+    border-radius: 14px; padding: 14px 18px 12px;
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 12px 36px rgba(0,0,0,0.45);
+  }
+  .progress {
+    height: 6px; border-radius: 999px; overflow: hidden;
+    background: rgba(255,255,255,0.14);
+  }
+  .progress > div {
+    height: 100%; width: 0;
+    background: linear-gradient(90deg, var(--accent), var(--accent-soft));
+    box-shadow: 0 0 12px rgba(124,92,255,0.55);
+    transition: width 0.6s ease;
+  }
+  .progress-label {
+    margin-top: 10px; font-size: 13px; font-weight: 600;
+    color: rgba(255,255,255,0.85); font-variant-numeric: tabular-nums;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.9);
+  }
+
+  /* ── Stats strip ────────────────────────── */
+  .stats {
+    position: relative; z-index: 3;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+    background: var(--border); border: 1px solid var(--border);
+    border-radius: 16px; overflow: hidden;
+    margin: -30px 24px 0;
+    box-shadow: 0 16px 40px rgba(0,0,0,0.45);
+  }
+  .stat { background: var(--surface); padding: 18px 20px; transition: background 0.15s; }
+  .stat:hover { background: var(--surface-2); }
+  .stat .k { font-size: 11px; text-transform: uppercase; letter-spacing: 1.2px; color: var(--faint); font-weight: 500; }
+  .stat .v {
+    font-size: 22px; font-weight: 700; margin-top: 6px; letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+
+  /* ── Trust signals ──────────────────────── */
+  .trust {
+    position: relative; z-index: 3;
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 6px 14px;
+    margin: 16px 24px 0; padding: 12px 16px;
+    font-size: 12.5px; color: var(--muted); text-align: center;
+    background: rgba(52,211,153,0.05);
+    border: 1px solid rgba(52,211,153,0.22); border-radius: 12px;
+  }
+  .trust a { color: var(--text); font-weight: 600; text-decoration: none; border-bottom: 1px solid var(--accent); }
+  .trust a:hover { color: var(--accent-soft); text-decoration: none; }
+  .trust .dot { color: var(--faint); }
+  @media (max-width: 640px) { .trust { font-size: 11.5px; margin: 16px 12px 0; } }
+
+  /* ── Section label ──────────────────────── */
+  .sec { display: flex; align-items: center; gap: 16px; margin: 48px 0 18px; }
+  .sec .eyebrow { font-size: 11px; letter-spacing: 1.8px; text-transform: uppercase; color: var(--faint); font-weight: 600; }
+  .sec-line { flex: 1; height: 1px; background: var(--border); }
+  .sec-note { font-size: 12px; color: var(--faint); }
+
+  /* ── Mint cards ─────────────────────────── */
+  .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .card {
+    position: relative; display: flex; flex-direction: column;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 20px; padding: 24px; overflow: hidden;
+    transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+  }
+  .card:hover {
+    transform: translateY(-3px);
+    border-color: var(--border-strong);
+    box-shadow: 0 18px 44px rgba(0,0,0,0.4);
+  }
+  .card.featured {
+    border-color: transparent;
+    background:
+      linear-gradient(var(--surface), var(--surface)) padding-box,
+      linear-gradient(150deg, rgba(124,92,255,0.65), rgba(124,92,255,0.10) 50%, rgba(124,92,255,0.30)) border-box;
+  }
+  .card.featured::before {
+    content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+    background: radial-gradient(420px 150px at 50% 0%, rgba(124,92,255,0.10), transparent 70%);
+  }
+  .card-top { display: flex; align-items: center; gap: 12px; }
+  .card-icon {
+    width: 40px; height: 40px; flex: none; display: grid; place-items: center;
+    border: 1px solid var(--border); border-radius: 12px;
+    background: rgba(255,255,255,0.03); color: var(--muted);
+  }
+  .card.featured .card-icon { color: var(--accent-soft); border-color: rgba(124,92,255,0.3); }
+  .card h2 { margin: 0; font-size: 16px; font-weight: 600; letter-spacing: -0.01em; }
+  .badge {
+    margin-left: auto; font-size: 11px; font-weight: 600; letter-spacing: 1px;
+    text-transform: uppercase; padding: 5px 10px; border-radius: 999px;
+    border: 1px solid rgba(124,92,255,0.45); color: var(--accent-soft);
+    background: rgba(124,92,255,0.08);
+  }
+  .tag {
+    font-size: 21px; font-weight: 700; letter-spacing: -0.02em;
+    margin: 18px 0 0; font-variant-numeric: tabular-nums;
+  }
+  .card-body { border-top: 1px solid var(--border); margin-top: 16px; padding-top: 16px; flex: 1; display: flex; flex-direction: column; }
+  .status {
+    display: inline-flex; align-items: center; gap: 8px; width: fit-content;
+    font-size: 13px; font-weight: 600; padding: 6px 12px 6px 10px;
+    border-radius: 999px; background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+  }
+  .status::before {
+    content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--muted);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(161,161,170,0.35); }
+    50% { opacity: 0.5; box-shadow: 0 0 0 4px rgba(161,161,170,0); }
+  }
+  .hint { font-size: 13px; color: var(--muted); min-height: 34px; margin: 10px 0 14px; }
+  .btn-wide { width: 100%; padding: 13px; font-size: 15px; margin-top: auto; }
+
+  .qty {
+    display: flex; align-items: stretch; height: 44px;
+    border: 1px solid var(--border-strong); border-radius: 12px;
+    overflow: hidden; margin: 14px 0 4px;
+  }
+  .qty > * + * { border-left: 1px solid var(--border); }
+  .qty button {
+    width: 46px; padding: 0; border: none; border-radius: 0;
+    background: transparent; color: var(--muted); font-size: 17px; font-weight: 500;
+  }
+  .qty button:hover:not(:disabled) { background: rgba(255,255,255,0.05); color: var(--text); }
+  #payQtyMax { width: auto; padding: 0 14px; font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--text); }
+  .qty input {
+    flex: 1; min-width: 0; border: none; background: transparent; text-align: center;
+    font: inherit; font-size: 16px; font-weight: 700; color: var(--text);
+    -moz-appearance: textfield;
+  }
+  .qty input::-webkit-outer-spin-button, .qty input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  .qty input:focus { outline: none; }
+  .total-row {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin: 10px 0 14px; font-size: 11px; color: var(--faint);
+    text-transform: uppercase; letter-spacing: 1.1px; font-weight: 600;
+  }
+  .total-row b { color: var(--text); font-size: 17px; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; }
+
+  /* ── Footer ─────────────────────────────── */
+  footer {
+    margin-top: 56px; padding-top: 22px; border-top: 1px solid var(--border);
+    color: var(--faint); font-size: 13px;
+    display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center; justify-content: space-between;
+  }
+  .foot-left { display: flex; flex-wrap: wrap; gap: 10px 22px; align-items: center; }
+  .pill { font-size: 11px; padding: 3px 9px; border-radius: 999px; border: 1px solid var(--border); text-transform: uppercase; letter-spacing: 0.8px; }
+  .pill-ok { color: var(--ok); border-color: rgba(52,211,153,0.4); }
+  .pill-warn { color: var(--warn); border-color: rgba(251,191,36,0.4); }
+  .copy { cursor: pointer; color: var(--muted); border-bottom: 1px dashed var(--border-strong); }
+  .copy:hover { color: var(--text); }
+  .soc { color: var(--muted); font-weight: 500; }
+  .soc:hover { color: var(--text); }
+
+  /* ── Toasts ─────────────────────────────── */
+  #toasts { position: fixed; right: 16px; bottom: 16px; display: flex; flex-direction: column; gap: 8px; z-index: 50; }
+  .toast {
+    background: #121216; border: 1px solid var(--border-strong); border-left: 3px solid var(--accent);
+    padding: 11px 14px; border-radius: 12px; font-size: 13px; max-width: 360px;
+    display: flex; gap: 10px; align-items: baseline;
+    box-shadow: 0 12px 34px rgba(0,0,0,0.5);
+    animation: slide 0.2s ease;
+  }
+  .toast a { font-size: 12px; color: var(--muted); }
+  .toast-success { border-left-color: var(--ok); }
+  .toast-error { border-left-color: var(--err); }
+  .toast-info { border-left-color: var(--accent); }
+  .toast.out { opacity: 0; transition: opacity 0.5s; }
+  @keyframes slide { from { transform: translateX(20px); opacity: 0; } to { transform: none; opacity: 1; } }
+
+  @media (max-width: 860px) {
+    .stats { grid-template-columns: repeat(2, 1fr); margin: -24px 12px 0; }
+    .cards { grid-template-columns: 1fr; }
+    header { flex-wrap: wrap; }
+    .sec-note { display: none; }
+    .banner-content { padding: 52px 18px 44px; }
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand"><span id="brandName">…</span><span class="sym" id="brandSymbol"></span></div>
+      <div class="spacer"></div>
+      <a class="icon-btn" id="linkX" href="https://x.com/BoneboundRH" target="_blank" rel="noopener" aria-label="X (Twitter)" title="X (Twitter)">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/>
+        </svg>
+      </a>
+      <a class="icon-btn" id="linkOS" href="https://opensea.io/collection/bonebound" target="_blank" rel="noopener" aria-label="OpenSea" title="OpenSea">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M11.2 3.8 5.2 14.2h6zm1.4 2.4v8h5.2zM4.4 15.6h15.2c-.8 2.8-3.6 4.6-7.6 4.6S5.2 18.4 4.4 15.6z"/>
+        </svg>
+      </a>
+      <div class="net net-idle" id="networkBadge" title="Click to switch network">…</div>
+      <button id="connectBtn">Connect wallet</button>
+    </header>
+
+    <!-- Hero banner: title, chain status and minted counter live ON the image.
+         Save your collection image as banner.png (or banner.jpg) next to this file. -->
+    <section class="banner">
+      <img src="banner.png" alt="BoneBound collection"
+           onerror="if(!this.dataset.f){this.dataset.f=1;this.src='banner.jpg';}else{this.style.display='none';}" />
+      <span class="banner-badge">Official Mint</span>
+
+      <div class="banner-content">
+        <h1 id="heroTitle">BoneBound</h1>
+        <p class="sub" id="heroSub">BONEB on Robinhood Chain · revealed</p>
+        <div class="glass">
+          <div class="progress"><div id="progressFill"></div></div>
+          <div class="progress-label" id="progressLabel">0 / 10,000 minted</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats strip overlapping the banner -->
+    <section class="stats">
+      <div class="stat"><div class="k">Minted</div><div class="v" id="statMinted">—</div></div>
+      <div class="stat"><div class="k">Max supply</div><div class="v" id="statSupply">—</div></div>
+      <div class="stat"><div class="k">Mint price</div><div class="v" id="statPrice">—</div></div>
+      <div class="stat"><div class="k">Your NFTs</div><div class="v" id="statYours">—</div></div>
+    </section>
+
+    <p class="trust">
+      <a href="https://robin.etherscan.io/address/0xE8775FE1F7f6B52957f3BefbA60D0959824F4558#code" target="_blank" rel="noopener noreferrer">Verified contract source ↗</a>
+      <span class="dot">·</span>
+      <span>This site never requests token approvals</span>
+      <span class="dot">·</span>
+      <span>mint transactions go to this contract only</span>
+      <span class="dot">·</span>
+      <a href="https://opensea.io/collection/bonebound" target="_blank" rel="noopener noreferrer">OpenSea collection ↗</a>
+    </p>
+
+    <div class="sec">
+      <span class="eyebrow">Mint</span>
+      <span class="sec-line"></span>
+      <span class="sec-note">Limited supply · first come, first served</span>
+    </div>
+
+    <section class="cards">
+      <article class="card">
+        <div class="card-top">
+          <span class="card-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5C11 3 12 8 12 8s1-5 4.5-5a2.5 2.5 0 0 1 0 5"/></svg>
+          </span>
+          <h2>Free mint</h2>
+          <span class="badge">Free</span>
+        </div>
+        <div class="tag" id="freeTag">1 per wallet · lifetime</div>
+        <div class="card-body">
+          <span class="status" id="freeStatus">…</span>
+          <p class="hint" id="freeHint"></p>
+          <button class="btn-wide" id="freeBtn" disabled>Mint free NFT</button>
+        </div>
+      </article>
+
+      <article class="card featured">
+        <div class="card-top">
+          <span class="card-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          </span>
+          <h2>Paid mint</h2>
+        </div>
+        <div class="tag" id="payEach">…</div>
+        <div class="card-body">
+          <div class="qty">
+            <button id="payQtyMinus" aria-label="decrease">−</button>
+            <input id="payQty" type="number" min="1" value="1" />
+            <button id="payQtyPlus" aria-label="increase">+</button>
+            <button id="payQtyMax">Max</button>
+          </div>
+          <div class="total-row"><span>Total</span><b id="payTotal">0 ETH</b></div>
+          <span class="status" id="payStatus">…</span>
+          <p class="hint" id="payHint"></p>
+          <button class="btn-wide" id="payBtn" disabled>Mint</button>
+        </div>
+      </article>
+    </section>
+
+    <footer>
+      <div class="foot-left">
+        <span>Contract: <a id="cAddress" href="https://robin.etherscan.io/address/0xE8775FE1F7f6B52957f3BefbA60D0959824F4558" target="_blank" rel="noopener noreferrer" title="0xE8775FE1F7f6B52957f3BefbA60D0959824F4558">0xE8775FE1…4F4558</a> <span class="copy" id="copyContract">copy</span></span>
+        <span>Source: <a class="soc" href="https://robin.etherscan.io/address/0xE8775FE1F7f6B52957f3BefbA60D0959824F4558#code" target="_blank" rel="noopener noreferrer">Verified code ↗</a></span>
+        <span>Status: <span class="pill pill-ok" id="cPaused">…</span></span>
+        <span>Metadata: <span class="pill pill-warn" id="cReveal">…</span></span>
+        <span>
+          <a class="soc" id="footX" href="https://x.com/BoneboundRH" target="_blank" rel="noopener">X (Twitter) ↗</a> ·
+          <a class="soc" id="footOS" href="https://opensea.io/collection/bonebound" target="_blank" rel="noopener">OpenSea ↗</a>
+        </span>
+      </div>
+      <span>© <span id="year">2025</span> BoneBound</span>
+    </footer>
+  </div>
+
+  <!-- Hidden compatibility stubs: app.js writes to these IDs. Keep this block (or
+       delete it AND remove the matching lines in app.js to avoid null errors). -->
+  <div hidden aria-hidden="true">
+    <span id="wAddress"></span><span id="wOwned"></span><span id="wFree"></span>
+    <span id="wPaid"></span><span id="wEth"></span><span id="wCooldown"></span>
+    <div id="activityList"></div>
+  </div>
+
+  <div id="toasts"></div>
+
+  <script src="ethers.umd.min.js"></script>
+  <script src="config.js"></script>
+  <script src="logic.js"></script>
+  <script src="app.js"></script>
+  <script>
+    (function () {
+      var cfg = window.APP_CONFIG || {};
+
+      // Contract link
+      var a = document.getElementById("cAddress");
+      a.textContent = cfg.contract.slice(0, 10) + "…" + cfg.contract.slice(-6);
+      a.href = cfg.explorer + "/address/" + cfg.contract;
+      a.title = cfg.contract;
+
+      // Socials — hardcoded here; config.js values override if you add them later
+      var xUrl  = cfg.twitter || "https://x.com/BoneboundRH";
+      var osUrl = cfg.opensea  || "https://opensea.io/collection/bonebound";
+      document.getElementById("linkX").href = xUrl;
+      document.getElementById("footX").href = xUrl;
+      document.getElementById("linkOS").href = osUrl;
+      document.getElementById("footOS").href = osUrl;
+
+      // Footer year
+      document.getElementById("year").textContent = new Date().getFullYear();
+    })();
+  </script>
+</body>
+</html>
