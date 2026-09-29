@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://bonebound.vercel.app/sitemap.xml
+Sitemap: https://bonebound.github.io/sitemap.xml
