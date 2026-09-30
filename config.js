@@ -1,5 +1,5 @@
 window.APP_CONFIG = {
- "contract": "0xE8775FE1F7f6B52957f3BefbA60D0959824F4558",
+ "contract": "0x8632e439055499668a41305f60f107B88AB3EE77",
  "chainId": 4663,
  "chainName": "Robinhood Chain",
  "chainIdHex": "0x1237",
